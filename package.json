@@ -1,0 +1,11 @@
+{
+  "name": "twitch-subnotifier",
+  "version": "0.1.0",
+  "description": "A Twitch Notifier",
+  "main": "app.js",
+  "author": "Remco Troost",
+  "license": "MIT",
+  "dependencies": {
+    "tmi.js": "^1.1.1"
+  }
+}
