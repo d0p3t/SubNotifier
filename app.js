@@ -5,12 +5,6 @@ var client = new tmi.client(config.tmi);
 client.connect();
 
 
-client.on("message", function (channel, userstate, message, self) {
-    // Don't listen to my own messages..
-    if (self) return;
-    client.say(channel, "TwitchLit Eyyyyy has just subscribed to " + channel + "!!! TwitchLit");
-});
-
 client.on("subscription", function (channel, username, method) {
     // Do your stuff.
 
