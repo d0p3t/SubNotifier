@@ -22,3 +22,4 @@ client.on("message", function (channel, userstate, message, self) {
     if(message.includes("d0p3t"))
     	client.say(channel, "Did I just hear someone say d0p3t?! OMG");
 });
+
