@@ -15,7 +15,7 @@ Questions? Open an issue or tweet [@d0p3t](https://twitter.com/d0p3t)
 ## Usage
 Run `node app.js`
 
-To hide the chat, set `debug: false` in `config.js`.  
-Create your own custom messages? Edit `app.js`
+* Hide chat? Set `debug: false` in `config.js`.  
+* Create your own custom messages? Edit `app.js`
 
 
