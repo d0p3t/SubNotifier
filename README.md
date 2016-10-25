@@ -10,4 +10,6 @@ Simple Sub and Resub notifier for Twitch
 2. Edit config.js
 
 ## Usage
-`node app.js`
+Run `node app.js`
+
+To hide the chat, set `debug: false` in `config.js`
