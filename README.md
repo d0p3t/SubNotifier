@@ -10,7 +10,7 @@ Questions? Open an issue or tweet [@d0p3t](https://twitter.com/d0p3t)
 
 ## Installation
 1. `npm install`
-2. Edit config.js
+2. Edit `config.js`
 
 ## Usage
 Run `node app.js`
