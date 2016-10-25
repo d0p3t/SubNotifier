@@ -1,5 +1,5 @@
 # SubNotifier
-Simple Sub and Resub notifier for Twitch
+Simple Sub and Resub notifier for Twitch chat
 
 Questions? Open an issue or tweet [@d0p3t](https://twitter.com/d0p3t)
 
