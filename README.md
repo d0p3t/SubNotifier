@@ -3,6 +3,15 @@ Simple Sub and Resub notifier for Twitch chat
 
 Questions? Open an issue or tweet [@d0p3t](https://twitter.com/d0p3t)
 
+## Changelog
+v0.2.0
+* Updated tmi.js to v1.2.1
+* Added support for newest TwitchNotify events
+* Added separate announcement for Prime subscriptions
+* Disabled debug by default
+
+v0.1.0
+* Initial release
 
 ## Requirements
 1. Node
@@ -11,11 +20,12 @@ Questions? Open an issue or tweet [@d0p3t](https://twitter.com/d0p3t)
 ## Installation
 1. `npm install`
 2. Edit `config.js`
+3. (optional) Edit messages in `app.js`
 
 ## Usage
 Run `node app.js`
 
-* Hide chat? Set `debug: false` in `config.js`.  
+* Show chat? Set `debug: true` in `config.js`.  
 * Create your own custom messages? Edit `app.js`
 
 
