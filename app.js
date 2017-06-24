@@ -5,21 +5,26 @@ var client = new tmi.client(config.tmi);
 client.connect();
 
 
-client.on("subscription", function (channel, username, method) {
-
-    client.say(channel, "ninjaHype " + username + " just subscribed!!!");
+client.on("subscription", function (channel, username, method, message, userstate) {
+	if (method.prime === true) {
+		console.log("Prime Sub");
+		client.say(channel, "PogChamp " + username + " just subscribed with Twitch Prime!!! (" + message + ")");
+	}
+	else {
+		console.log("Normal Sub");
+		client.say(channel, "PogChamp " + username + " just subscribed!!! (" + message + ")");
+	}
 
 });
 
-client.on("resub", function (channel, username, months, message) {
-
-    client.say(channel, "ninjaHype" + username + " has just re-subscribed for " + months + " years!!!");
-
-});
-
-client.on("message", function (channel, userstate, message, self) {
-    if (self) return;
-    if(message.includes("d0p3t"))
-    	client.say(channel, "Did I just hear someone say d0p3t?! OMG");
+client.on("resub", function (channel, username, months, message, userstate, methods) {
+	if (methods.prime === true) {
+		console.log("Resub prime");
+		client.say(channel, "PogChamp RESUB HYPE PogChamp " + username + " has just re-subscribed for " + months + " months using Twitch Prime!!! (" + message + ")");
+	}
+	else {
+		console.log("Normal Sub");
+		client.say(channel, "PogChamp RESUB HYPE PogChamp " + username + " has just re-subscribed for " + months + " months!!! (" + message + ")");	
+	}
 });
 
