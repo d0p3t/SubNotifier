@@ -1,7 +1,11 @@
 # SubNotifier
 Simple Sub and Resub notifier for Twitch chat
 
+**Currently used in d0p3tbot, a bot for Twitch chat. Check it out [here](https://github.com/d0p3t/d0p3tbot)!**
+
 Questions? Open an issue or tweet [@d0p3t](https://twitter.com/d0p3t)
+
+
 
 ## Changelog
 v0.2.0
