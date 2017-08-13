@@ -10,6 +10,9 @@ Questions? Open an issue or tweet [@d0p3t](https://twitter.com/d0p3t)
 ## Changelog
 v0.2.1
 * Got rid of `message` in default subscription notify due to TwitchNotify changes
+* Fixed `message` sometimes displaying as `null` during resub
+* Added logfile creation with information about sub/resub
+
 v0.2.0
 * Updated tmi.js to v1.2.1
 * Added support for newest TwitchNotify events
