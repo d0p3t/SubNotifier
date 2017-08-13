@@ -7,7 +7,7 @@
 //                      https://twitchapps.com/tmi/                          //
 // --------------------------------------------------------------------------//
 // --------------------------------------------------------------------------//
-//              More info https://github.com/remcotroost/SubNotifier         //
+//              More info https://github.com/d0p3t/SubNotifier               //
 //                          or @d0p3t on Twitter                             //
 // --------------------------------------------------------------------------//
 
@@ -23,9 +23,9 @@ config.tmi = {
     },
     identity: {
         username: 'your username',
-        password: 'your oauth token'    // For example -> 'oauth:23457feg97345897fd98723f' 
+        password: 'your oauth token'    // For example -> 'oauth:23457feg97345897fd98723f'
     },
-    channels: ["#yourchannel"]          // Must have a # sign. For example -> ["#summit1g"]
+    channels: ["#yourchannel"]          // Must have a # sign. For example -> ["#summit1g"] Multiple channels -> ["#summit1g", "#sodapoppin"]
 };
 
 module.exports = config;
