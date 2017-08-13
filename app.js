@@ -16,7 +16,7 @@ client.on("subscription", function (channel, username, method, message, userstat
 	}
 	else {
 		console.log("Normal Sub");
-		client.say(channel, "PogChamp SUB HYPE PogChamp " + username + " just subscribed!!!";
+		client.say(channel, "PogChamp SUB HYPE PogChamp " + username + " just subscribed!!!");
 	}
 
 });
