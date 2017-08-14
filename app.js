@@ -53,8 +53,8 @@ client.on("resub", function (channel, username, months, message, userstate, meth
 	}
 	else {
 		if(message === null)
-			client.say(channel, "PogChamp RESUB HYPE PogChamp " + username + " has just re-subscribed for " + months + " months using Twitch Prime!!!");
+			client.say(channel, "PogChamp RESUB HYPE PogChamp " + username + " has just re-subscribed for " + months + " months!!!");
 		else
-			client.say(channel, "PogChamp RESUB HYPE PogChamp " + username + " has just re-subscribed for " + months + " months using Twitch Prime!!! ('" + message + "')");
+			client.say(channel, "PogChamp RESUB HYPE PogChamp " + username + " has just re-subscribed for " + months + " months!!! ('" + message + "')");
 	}
 });
