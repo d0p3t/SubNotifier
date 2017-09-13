@@ -1,21 +1,145 @@
 <div align="center">
 
-# SubNotifier
-Simple Sub and Resub notifier for Twitch chat using [tmi.js](https://github.com/tmijs/tmi.js)
+# SubNotifier (v1.0.0)
 
-**Currently used in d0p3tbot, a bot for Twitch chat. Check it out [here](https://github.com/d0p3t/d0p3tbot)!**
+<img src="http://i.imgur.com/gZkK7Yu.png" width="200px" height="200px">
 
-Questions? Open an issue or tweet [@d0p3t](https://twitter.com/d0p3t)
+##### A Simple Sub and Resub Notifier for Twitch Chat
+
+![Version](https://img.shields.io/badge/version-1.0.0-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
+### Want to use SubNotifier but need a Host? Follow + Tweet me [@d0p3t](https://twitter.com/d0p3t). I'm giving away 5 hosting plans for this script until November 2017
+### Want a full-fledged Twitch bot? Check out [d0p3tbot](https://github.com/d0p3t/d0p3tbot)(pre-alpha)!
 
 </div>
 
+## Features
+* Chat alerts on subscriptions and resubscriptions
+* Chat alerts on bits cheered
+* Add your own custom alert messages for every channel and chat alert
+* Easy configuration with ability to enable/disable features
+* Multi channel support
+* Logfile to track subscriptions, resubscriptions and bits chat alerts
+
+---
+
+## Screenshot
+<div align="center">
+
+![Alert](https://pbs.twimg.com/media/DJZXK-SXoAEVw2_.jpg)
+
+</div>
+
+---
+
+## Quickstart
+1. Install [NodeJS](https://nodejs.org/en/download/)
+2. Clone or download the repository
+3. Open a terminal window and navigate to the directory
+4. Install dependencies `npm install`
+5. Edit `src/config/config.sample.js` and rename to `config.js`
+
+* **Production** - Build `npm run build` then `npm run serve`  
+* **Development** - Start `npm start`
+
+---
+
+## Configuration
+A configuration file can be found in `./src/config/config.sample.js`. Configure all settings as you desire and rename the file to `config.js`. If you are running in the production environment you will have to rebuild with `npm run build`.
+
+### Connecting to Twitch Chat
+To be able to connect to Twitch chat, you have to register an application and get an OAuth token with the correct scopes. You will also have to specify at least one channel. Please keep in mind that you need custom alerts for each channel if you have `enableCustomMessages: true`.
+
+* Register an application on Twitch [here](https://dev.twitch.tv/dashboard/apps/create) and copy the clientId
+* Login to the Twitch account to be used and get an [OAuth token](https://twitchapps.com/tmi/)
+
+```javascript
+clientId: 'xxxxxxxxxxxxxxxx',
+username: 'd0p3tbot',
+token: 'xxxxxxxxxxxxxxxxx',
+channels: ['#d0p3t', '#summit1g', '#cdnthe3rd'],
+```
+### Configure Chat Messages
+There are three types of chat notifiers, we call them Chat Alerts.
+* subscriptions
+* resubscriptions
+* bits
+
+You can use the defaults or use as many custom chat alerts as you wish. If you activate custom chat alerts, you **MUST** set at least 1 custom chat alert per type and channel.
+
+Within the chat alerts you can use various variables. Below is a list of available variables with a description and where you can use them.
+
+| Variable        | Description           | Uses  |
+|---------------|-------------|-----|
+| {{username}}    | Displays the username of the (re)subscriber/cheerer | subscriptions, resubscriptions, bits |
+| {{months}}      | Number of months resubscribed      | resubscriptions |
+| {{years}}       | Displays # years if 1 year or more (as `[ X year(s) and X month(s) ]`) | resubscriptions |
+| {{bits}}        | Amount of bits cheered | bits |
+
+```javascript
+'#d0p3t': {
+  subscriptions: {
+    custom1: 'PogChamp SUB Thank you for subscribing {{username}}',
+    custom2: 'CoolStoryBob SUB Thank you for subscribing {{username}}',
+    custom3: 'DansGame SUB Thank you for subscribing {{username}}' },
+  resubscriptions: {
+    custom1: 'PogChamp RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
+    custom2: 'WutFace RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
+    custom3: '<3 RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}' },
+  bits: {
+    custom1: 'Wowzers, {{username}} cheered {{bits}} BITS!',
+    custom2: 'Oh so kind, {{username}} with the {{bits}} BITS!',
+    custom3: 'LUL we got a happy cheerer over here ({{username}}: {{bits}} bits)!' },
+},
+```
+
+### Enable/Disable Features
+There also various settings that you can set enable (true) or disable (false).
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| enableDebug | Enables debugMode for extra console output | false |
+| enableSecureMode | Connects to Twitch chat with SSL (443) | true |
+| enableMeMode | Chat alerts start with */me* | true |
+| enableSubAlerts | Enables subscription chat notifications | true |
+| enableResubAlerts | Enables resubscriptions chat notifications | true |
+| enableBitAlerts | Enables bits chat notifcations | false |
+| enableCustomMessages | Enables custom chat alerts | true |
+
+
+
+If you've configured everything correctly, you will now be able to start *SubNotifier* and upon a successful connection will see `CONNECTED to chat on irc-ws.chat.twitch.tv:443`. If you are still having issues, please refer to the sample configuration file first and then open an issue (see below).
+
+---
+
+## Issues
+If you have any issues or questions, open an issue or tweet me [@d0p3t](https://twitter.com/d0p3t).
+
+For configuration file problems, please first check whether your syntax is correct and you aren't missing any commas or brackets. SubNotifier has a failsafe against missing custom messages, but will not revert to the defaults if `enableCustomMessages: true`.
+
+---
+
+## Thank You!
+Thank you to the creators and maintainers of [tmi.js](https://github.com/tmijs/tmi.js) for providing easy access to TwitchNotify events and Twitch Chat.
+
+Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu](https://twitter.com/dinuDB) for discussing and coming up with new features. Without you SubNotifier wouldn't have improved as it did now.
+
+![bitmoji](https://render.bitstrips.com/v2/cpanel/10219133-189398152_3-s4-v1.png?transparent=1&palette=1&width=246)
+
+---
+
 ## Changelog
-v0.2.1
+v1.0.0 (13 September 2017)
+* Complete rewrite of codebase (ECMASCRIPT 6)
+* Now supports bits
+* Separation of custom messages
+* Multi channel support
+* New configuration file
+
+v0.2.0
 * Got rid of `message` in default subscription notify due to TwitchNotify changes
 * Fixed `message` sometimes displaying as `null` during resub
 * Added logfile creation with information about sub/resub
-
-v0.2.0
 * Updated tmi.js to v1.2.1
 * Added support for newest TwitchNotify events
 * Added separate announcement for Prime subscriptions
@@ -23,20 +147,3 @@ v0.2.0
 
 v0.1.0
 * Initial release
-
-## Requirements
-1. [NodeJS](https://nodejs.org/en/download/)
-2. NPM (comes with NodeJS)
-
-## Installation
-1. Clone or download the repository
-2. Open Terminal and go to directory
-3. Install dependencies `npm install`
-4. Edit `config.js`
-5. (optional) Edit messages in `app.js`
-
-## Usage
-1. Run application `node app.js` in terminal
-
-* Show chat? Set `debug: true` in `config.js`.  
-* Create your own custom messages? Edit `app.js`

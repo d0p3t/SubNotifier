@@ -1,2 +1,5 @@
 node_modules/
-logfile.log
+src/config/config.js
+dist/
+log/
+.DS_Store
