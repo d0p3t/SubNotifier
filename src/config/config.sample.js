@@ -5,6 +5,7 @@
  *      {{months}} - Amount of months username has resubscribed for (ONLY resubscriptions!)
  *      {{years}} - If resubbed more than one year, will display '[ X year(s) and X month(s)]'
  *      {{bits}} - Amount of bits cheered (ONLY bits!)
+ *      {{message}} - Message sent with the alert
  * @type {Object}
  */
 const Config = {

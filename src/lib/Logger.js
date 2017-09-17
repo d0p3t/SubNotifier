@@ -33,6 +33,7 @@ export const Logger = new (winston.Logger)({
       timestamp: tsFormat,
       colorize: true,
       level: 'info',
+      prettyPrint: true,
     }),
     new (WinstonDaily)({
       filename: `${logDir}/-results.log`,

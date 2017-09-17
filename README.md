@@ -39,13 +39,18 @@
 4. Install dependencies `npm install`
 5. Edit `src/config/config.sample.js` and rename to `config.js`
 
-* **Production** - Build `npm run build` then `npm run serve`  
-* **Development** - Start `npm start`
+(**HIGHLY RECOMMENDED**) Build and run the application in _**Production Mode**_
+
+* Build `npm run build` then `npm run serve`
+
+If you are a developer or want to debug go into _**Development Mode**_
+
+* Start `npm start`
 
 ---
 
 ## Configuration
-A configuration file can be found in `./src/config/config.sample.js`. Configure all settings as you desire and rename the file to `config.js`. If you are running in the production environment you will have to rebuild with `npm run build`.
+A configuration file can be found in `./src/config/config.sample.js`. Configure all settings as you desire and rename the file to `config.js`. If you are running in the production environment you will have to rebuild with `npm run build` everytime you change something in the configuration file.
 
 ### Connecting to Twitch Chat
 To be able to connect to Twitch chat, you have to register an application and get an OAuth token with the correct scopes. You will also have to specify at least one channel. Please keep in mind that you need custom alerts for each channel if you have `enableCustomMessages: true`.
@@ -61,11 +66,12 @@ channels: ['#d0p3t', '#summit1g', '#cdnthe3rd'],
 ```
 ### Configure Chat Messages
 There are three types of chat notifiers, we call them Chat Alerts.
+
 * subscriptions
 * resubscriptions
 * bits
 
-You can use the defaults or use as many custom chat alerts as you wish. If you activate custom chat alerts, you **MUST** set at least 1 custom chat alert per type and channel.
+You can use as many custom chat alerts as you wish. If you activate custom chat alerts, you **MUST** set at least 1 custom chat alert per type and channel. If custom alerts are not enabled, it will default to predefined messages.
 
 Within the chat alerts you can use various variables. Below is a list of available variables with a description and where you can use them.
 
@@ -75,6 +81,7 @@ Within the chat alerts you can use various variables. Below is a list of availab
 | {{months}}      | Number of months resubscribed      | resubscriptions |
 | {{years}}       | Displays # years if 1 year or more (as `[ X year(s) and X month(s) ]`) | resubscriptions |
 | {{bits}}        | Amount of bits cheered | bits |
+| {{message}}        | Message sent with event | subscriptions, resubscriptions, bits |
 
 ```javascript
 '#d0p3t': {
@@ -83,7 +90,7 @@ Within the chat alerts you can use various variables. Below is a list of availab
     custom2: 'CoolStoryBob SUB Thank you for subscribing {{username}}',
     custom3: 'DansGame SUB Thank you for subscribing {{username}}' },
   resubscriptions: {
-    custom1: 'PogChamp RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
+    custom1: 'PogChamp RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}} {{message}}',
     custom2: 'WutFace RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
     custom3: '<3 RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}' },
   bits: {
@@ -94,7 +101,7 @@ Within the chat alerts you can use various variables. Below is a list of availab
 ```
 
 ### Enable/Disable Features
-There also various settings that you can set enable (true) or disable (false).
+There also various settings that you can enable (true) or disable (false).
 
 | Setting | Description | Default |
 |---------|-------------|---------|
@@ -108,14 +115,14 @@ There also various settings that you can set enable (true) or disable (false).
 
 
 
-If you've configured everything correctly, you will now be able to start *SubNotifier* and upon a successful connection will see `CONNECTED to chat on irc-ws.chat.twitch.tv:443`. If you are still having issues, please refer to the sample configuration file first and then open an issue (see below).
+If you've configured everything correctly, you will now be able to start *SubNotifier* and upon a successful connection will see `CONNECTED: Waiting for events...`. If you are still having issues, please refer to the sample configuration file first and then open an issue (see below).
 
 ---
 
 ## Issues
 If you have any issues or questions, open an issue or tweet me [@d0p3t](https://twitter.com/d0p3t).
 
-For configuration file problems, please first check whether your syntax is correct and you aren't missing any commas or brackets. SubNotifier has a failsafe against missing custom messages, but will not revert to the defaults if `enableCustomMessages: true`.
+For configuration file problems, please first check whether your syntax is correct and you aren't missing any commas or brackets. SubNotifier has a failsafe against missing custom messages, but will not revert to the defaults if `enableCustomMessages: true` and there is a problem with the configuration file.
 
 ---
 
@@ -129,6 +136,12 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 ---
 
 ## Changelog
+v1.0.1 (17 September 2017)
+* Fixed - Better handling of # of custom messages
+* Added `prettyPrint: true` to `Logger.js` for better console output
+* Added more debug messages
+* Added the `{{message}}` variable
+
 v1.0.0 (13 September 2017)
 * Complete rewrite of codebase (ECMASCRIPT 6)
 * Now supports bits

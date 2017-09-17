@@ -24,6 +24,7 @@
     "no-underscore-dangle": ["warn", {
       "allowAfterThis": true
     }],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-restricted-syntax": "off"
   }
 }

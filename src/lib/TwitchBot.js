@@ -46,6 +46,12 @@ class TwitchBot {
    * @return {[none]} [description]
    */
   Start() {
+    Logger.info('STARTING SubNotifier...');
+
+    if (Config.enableDebug) {
+      Logger.transports.console.level = 'debug';
+    }
+
     this._options = {
       options: {
         clientId: this._clientId,
@@ -62,12 +68,44 @@ class TwitchBot {
       },
       channels: this._channels,
     };
+
     this._client = new tmi.client(this._options);
-    Logger.info('STARTING SubNotifier...');
+
+    if (Config.enableCustomMessages) {
+      Logger.debug('COUNTING Custom Messages...');
+
+      this._messagesCount = [];
+
+      for (let i = 0; i < this._channels.length; i += 1) {
+        const channel = this._channels[i];
+        const allMsgs = Object.getOwnPropertyNames(Config.customMessages[channel]);
+        this._messagesCount = { subscriptions: 0, resubscriptions: 0, bits: 0 };
+        for (const type of allMsgs) {
+          const messagesOfThisType = Config.customMessages[channel][type];
+          for (let message in messagesOfThisType) {
+            if (messagesOfThisType.hasOwnProperty(message)) {
+              ++this._messagesCount[type];
+              Logger.debug(`FOUND [${type}] message for channel [${channel}]`);
+            }
+          }
+          if(this._messagesCount[type] < 1) {
+            Logger.error(`You MUST have at least 1 custom message for ${type} (channel: ${channel})!`);
+            process.exit(1);
+          } else {
+            Logger.debug(`COUNTED ${this._messagesCount[type]} ${type} messages.`);
+          }
+        }
+      }
+      Logger.debug('TOTAL MESSAGES:');
+      Logger.debug(JSON.stringify(this._messagesCount));
+
+      Logger.info('ENABLED Custom Messages!');
+    }
 
     this._client.connect()
       .then((data) => {
-        Logger.info(`CONNECTED to chat on ${data[0]}:${data[1]}`);
+        Logger.debug(`CONNECTED to chat on ${data[0]}:${data[1]}`);
+        Logger.info('CONNECTED: Waiting for events...');
       })
       .catch((err) => {
         Logger.error(`ERROR Could not connect to chat (${err})`);
@@ -101,13 +139,10 @@ class TwitchBot {
       if (Config.enableCustomMessages) {
         const subAlertMessages = Config.customMessages[channel].subscriptions;
         if (subAlertMessages !== undefined) {
-          let count = 0;
-          for (let key of Object.keys(subAlertMessages)) {
-            count += 1;
-          }
-          const rand = RandomNumber(1, count);
+          const rand = RandomNumber(1, this._messagesCount.subscriptions);
           const alert = subAlertMessages[`custom${rand}`];
-          const finalAlert = alert.replace(/{{username}}/gi, username);
+          let finalAlert = alert.replace(/{{username}}/gi, username);
+          finalAlert = finalAlert.replace(/{{message}}/gi, message);
           if (Config.enableMeMode) {
             this._client.action(channel, finalAlert)
               .then((data) => {
@@ -125,7 +160,7 @@ class TwitchBot {
                 Logger.error(`SUBALERT could not be sent (ERROR ${err})`);
               });
           }
-        } else if (Config.enableDebug) {
+        } else {
           Logger.warn(`No custom SUB messages found for channel: ${channel}! Please check your configuration.`);
         }
       } else if (Config.enableMeMode) {
@@ -156,13 +191,8 @@ class TwitchBot {
     this._client.on('resub', (channel, username, months, message, userstate, methods) => {
       if (Config.enableCustomMessages) {
         const resubAlertMessages = Config.customMessages[channel].resubscriptions;
-        Logger.info(resubAlertMessages);
         if (resubAlertMessages !== undefined) {
-          let count = 0;
-          for (let key of Object.keys(resubAlertMessages)) {
-            count++;
-          }
-          const rand = RandomNumber(1, count);
+          const rand = RandomNumber(1, this._messagesCount.resubscriptions);
           const alert = resubAlertMessages[`custom${rand}`];
           const years = Math.floor(months / 12);
           const yearMonths = months % 12;
@@ -190,7 +220,7 @@ class TwitchBot {
                 Logger.error(`RESUBALERT could not be sent (ERROR ${err})`);
               });
           }
-        } else if (Config.enableDebug) {
+        } else {
           Logger.warn(`No custom RESUB messages found for channel: ${channel}! Please check your configuration.`);
         }
       } else if (Config.enableMeMode) {
@@ -222,14 +252,11 @@ class TwitchBot {
       if (Config.enableCustomMessages) {
         const bitAlertMessages = Config.customMessages[channel].bits;
         if (bitAlertMessages !== undefined) {
-          let count = 0;
-          for (let key of Object.keys(bitAlertMessages)) {
-            count++;
-          }
-          const rand = RandomNumber(1, count);
+          const rand = RandomNumber(1, this._messagesCount.bits);
           const alert = bitAlertMessages[`custom${rand}`];
           let finalAlert = alert.replace(/{{username}}/gi, userstate.username);
           finalAlert = finalAlert.replace(/{{bits}}/gi, userstate.bits);
+          finalAlert = finalAlert.replace(/{{message}}/gi, message);
           if (Config.enableMeMode) {
             this._client.action(channel, finalAlert)
               .then((data) => {
@@ -247,7 +274,7 @@ class TwitchBot {
                 Logger.error(`BITALERT could not be sent (ERROR ${err})`);
               });
           }
-        } else if (Config.enableDebug) {
+        } else {
           Logger.warn(`No custom BIT messages found for channel: ${channel}! Please check your configuration.`);
         }
       } else if (Config.enableMeMode) {
