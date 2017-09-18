@@ -78,26 +78,27 @@ class TwitchBot {
 
       for (let i = 0; i < this._channels.length; i += 1) {
         const channel = this._channels[i];
+        this._messagesCount.push({ channel: channel });
         const allMsgs = Object.getOwnPropertyNames(Config.customMessages[channel]);
-        this._messagesCount = { subscriptions: 0, resubscriptions: 0, bits: 0 };
+        this._messagesCount[channel] = { subscriptions: 0, resubscriptions: 0, bits: 0 };
         for (const type of allMsgs) {
           const messagesOfThisType = Config.customMessages[channel][type];
           for (let message in messagesOfThisType) {
             if (messagesOfThisType.hasOwnProperty(message)) {
-              ++this._messagesCount[type];
-              Logger.debug(`FOUND [${type}] message for channel [${channel}]`);
+              ++this._messagesCount[channel][`${type}`];
+              Logger.debug(`FOUND [ ${type} ] message for channel [ ${channel} ]`);
             }
           }
-          if(this._messagesCount[type] < 1) {
-            Logger.error(`You MUST have at least 1 custom message for ${type} (channel: ${channel})!`);
+          if (this._messagesCount[type] < 1) {
+            Logger.error(`You MUST have at least 1 custom message for ${type} in channel [ ${channel} ]!`);
             process.exit(1);
           } else {
-            Logger.debug(`COUNTED ${this._messagesCount[type]} ${type} messages.`);
+            Logger.debug(`COUNTED ${this._messagesCount[channel][type]} ${type} messages for channel [ ${channel} ]`);
           }
         }
+        Logger.debug(`TOTAL MESSAGES IN CHANNEL [ ${channel} ] :`);
+        Logger.debug(JSON.stringify(this._messagesCount[channel]));
       }
-      Logger.debug('TOTAL MESSAGES:');
-      Logger.debug(JSON.stringify(this._messagesCount));
 
       Logger.info('ENABLED Custom Messages!');
     }
@@ -139,7 +140,10 @@ class TwitchBot {
       if (Config.enableCustomMessages) {
         const subAlertMessages = Config.customMessages[channel].subscriptions;
         if (subAlertMessages !== undefined) {
-          const rand = RandomNumber(1, this._messagesCount.subscriptions);
+          let rand = 1;
+          if (this._messagesCount.subscriptions !== 1) {
+            rand = RandomNumber(1, this._messagesCount[channel].subscriptions);
+          }
           const alert = subAlertMessages[`custom${rand}`];
           let finalAlert = alert.replace(/{{username}}/gi, username);
           finalAlert = finalAlert.replace(/{{message}}/gi, message);
@@ -192,7 +196,10 @@ class TwitchBot {
       if (Config.enableCustomMessages) {
         const resubAlertMessages = Config.customMessages[channel].resubscriptions;
         if (resubAlertMessages !== undefined) {
-          const rand = RandomNumber(1, this._messagesCount.resubscriptions);
+          let rand = 1;
+          if (this._messagesCount.resubscriptions !== 1) {
+            rand = RandomNumber(1, this._messagesCount[channel].resubscriptions);
+          }
           const alert = resubAlertMessages[`custom${rand}`];
           const years = Math.floor(months / 12);
           const yearMonths = months % 12;
@@ -252,7 +259,10 @@ class TwitchBot {
       if (Config.enableCustomMessages) {
         const bitAlertMessages = Config.customMessages[channel].bits;
         if (bitAlertMessages !== undefined) {
-          const rand = RandomNumber(1, this._messagesCount.bits);
+          let rand = 1;
+          if (this._messagesCount.bits !== 1) {
+            rand = RandomNumber(1, this._messagesCount[channel].bits);
+          }
           const alert = bitAlertMessages[`custom${rand}`];
           let finalAlert = alert.replace(/{{username}}/gi, userstate.username);
           finalAlert = finalAlert.replace(/{{bits}}/gi, userstate.bits);

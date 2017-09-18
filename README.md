@@ -1,12 +1,12 @@
 <div align="center">
 
-# SubNotifier (v1.0.0)
+# SubNotifier (v1.0.2)
 
 <img src="http://i.imgur.com/gZkK7Yu.png" width="200px" height="200px">
 
 ##### A Simple Sub and Resub Notifier for Twitch Chat
 
-![Version](https://img.shields.io/badge/version-1.0.0-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+![Version](https://img.shields.io/badge/version-1.0.2-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 ### Want to use SubNotifier but need a Host? Follow + Tweet me [@d0p3t](https://twitter.com/d0p3t). I'm giving away 5 hosting plans for this script until November 2017
 ### Want a full-fledged Twitch bot? Check out [d0p3tbot](https://github.com/d0p3t/d0p3tbot)(pre-alpha)!
@@ -136,6 +136,11 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 ---
 
 ## Changelog
+v1.0.2 (18 September 2017)
+* Fixed custom message counter
+* Added check whether there is more than 1 custom message in a alert type
+* Fixed `README.md` and `package.json` versioning
+
 v1.0.1 (17 September 2017)
 * Fixed - Better handling of # of custom messages
 * Added `prettyPrint: true` to `Logger.js` for better console output
