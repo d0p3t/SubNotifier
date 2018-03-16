@@ -1,6 +1,6 @@
 <div align="center">
 
-# SubNotifier (v1.0.2)
+# SubNotifier (v1.0.3)
 
 <img src="http://i.imgur.com/gZkK7Yu.png" width="200px" height="200px">
 
@@ -14,12 +14,12 @@
 </div>
 
 ## Features
-* Chat alerts on subscriptions and resubscriptions
+* Chat alerts on subscriptions, subscription gifting and resubscriptions
 * Chat alerts on bits cheered
 * Add your own custom alert messages for every channel and chat alert
 * Easy configuration with ability to enable/disable features
 * Multi channel support
-* Logfile to track subscriptions, resubscriptions and bits chat alerts
+* Logfile to track subscriptions, gifted subscriptions, resubscriptions and bits chat alerts
 
 ---
 
@@ -62,7 +62,7 @@ To be able to connect to Twitch chat, you have to register an application and ge
 clientId: 'xxxxxxxxxxxxxxxx',
 username: 'd0p3tbot',
 token: 'xxxxxxxxxxxxxxxxx',
-channels: ['#d0p3t', '#summit1g', '#cdnthe3rd'],
+channels: ['#d0p3t', '#summit1g', '#ninja'],
 ```
 ### Configure Chat Messages
 There are three types of chat notifiers, we call them Chat Alerts.
@@ -82,6 +82,7 @@ Within the chat alerts you can use various variables. Below is a list of availab
 | {{years}}       | Displays # years if 1 year or more (as `[ X year(s) and X month(s) ]`) | resubscriptions |
 | {{bits}}        | Amount of bits cheered | bits |
 | {{message}}        | Message sent with event | subscriptions, resubscriptions, bits |
+| {{recipient}}   | Recipient of a giften subscription  | gifted subscriptions  |
 
 ```javascript
 '#d0p3t': {
@@ -89,6 +90,10 @@ Within the chat alerts you can use various variables. Below is a list of availab
     custom1: 'PogChamp SUB Thank you for subscribing {{username}}',
     custom2: 'CoolStoryBob SUB Thank you for subscribing {{username}}',
     custom3: 'DansGame SUB Thank you for subscribing {{username}}' },
+  giftsubscriptions: {
+    custom1: 'PogChamp SUB Thank you for gifting {{recipient}} a subscription, {{username}}',
+    custom2: 'CoolStoryBob SUB Thank you for gifting {{recipient}} a subscription, {{username}}',
+    custom3: 'DansGame SUB Thank you for gifting {{recipient}} a subscription, {{username}}' },    
   resubscriptions: {
     custom1: 'PogChamp RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}} {{message}}',
     custom2: 'WutFace RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
@@ -109,6 +114,7 @@ There also various settings that you can enable (true) or disable (false).
 | enableSecureMode | Connects to Twitch chat with SSL (443) | true |
 | enableMeMode | Chat alerts start with */me* | true |
 | enableSubAlerts | Enables subscription chat notifications | true |
+| enableGiftSubAlerts | Enabled gift subscription chat notifications | true |
 | enableResubAlerts | Enables resubscriptions chat notifications | true |
 | enableBitAlerts | Enables bits chat notifcations | false |
 | enableCustomMessages | Enables custom chat alerts | true |
@@ -127,7 +133,7 @@ For configuration file problems, please first check whether your syntax is corre
 ---
 
 ## Thank You!
-Thank you to the creators and maintainers of [tmi.js](https://github.com/tmijs/tmi.js) for providing easy access to TwitchNotify events and Twitch Chat.
+Thank you to the creators and maintainers of [twitch-js](https://github.com/twitch-apis/twitch-js) for providing easy access to TwitchNotify events and Twitch Chat.
 
 Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu](https://twitter.com/dinuDB) for discussing and coming up with new features. Without you SubNotifier wouldn't have improved as it did now.
 
@@ -136,6 +142,10 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 ---
 
 ## Changelog
+v1.0.3 (16 March 2018)
+* Added gift subscription alerts
+* Switched to twitch-js, a more up-to-date version of tmi.js
+
 v1.0.2 (18 September 2017)
 * Fixed custom message counter
 * Added check whether there is more than 1 custom message in a alert type
