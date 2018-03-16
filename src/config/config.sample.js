@@ -17,6 +17,7 @@ const Config = {
   enableSecureMode: true,
   enableMeMode: true,
   enableSubAlerts: true,
+  enableGiftSubAlerts: true,
   enableResubAlerts: true,
   enableBitAlerts: false,
   enableCustomMessages: true,
@@ -26,6 +27,10 @@ const Config = {
         custom1: 'PogChamp SUB Thank you for subscribing {{username}}',
         custom2: 'CoolStoryBob SUB Thank you for subscribing {{username}}',
         custom3: 'DansGame SUB Thank you for subscribing {{username}}' },
+      giftsubscriptions: {
+        custom1: 'PogChamp GIFTED SUB Thank you for gifting {{recipient}} a subscription, {{username}}',
+        custom2: 'CoolStoryBob GIFTED SUB Thank you for gifting {{recipient}} a subscription, {{username}}',
+        custom3: 'DansGame GIFTED SUB Thank you for gifting {{recipient}} a subscription, {{username}}' },       
       resubscriptions: {
         custom1: 'PogChamp RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
         custom2: 'WutFace RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
@@ -40,6 +45,11 @@ const Config = {
         custom1: '',
         custom2: '',
         custom3: '' },
+      giftsubscriptions: {
+        custom1: '',
+        custom2: '',
+        custom3: ''
+      }, 
       resubscriptions: {
         custom1: '',
         custom2: '',

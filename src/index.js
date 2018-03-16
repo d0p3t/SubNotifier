@@ -29,6 +29,10 @@ if (Config.enableSubAlerts) {
   bot.SubAlert();
 }
 
+if (Config.enableGiftSubAlerts) {
+  bot.GiftSubAlert();
+}
+
 if (Config.enableResubAlerts) {
   bot.ResubAlert();
 }

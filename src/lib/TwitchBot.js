@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-import tmi from 'tmi.js';
+import Twitch from 'twitch-js';
 
 import { Logger } from './Logger';
 import { RandomNumber } from './Helpers';
@@ -26,7 +26,7 @@ import { Config } from '../config/config';
  */
 class TwitchBot {
   /**
-   * [Instantiates the TwitchBot with tmi.js options]
+   * [Instantiates the TwitchBot with twitch-js options]
    *
    * @param {[String]} clientId [Id of a registered application at Twitch]
    * @param {[String]} username [Username of the bot to be logged in]
@@ -69,7 +69,7 @@ class TwitchBot {
       channels: this._channels,
     };
 
-    this._client = new tmi.client(this._options);
+    this._client = new Twitch.client(this._options);
 
     if (Config.enableCustomMessages) {
       Logger.debug('COUNTING Custom Messages...');
@@ -186,6 +186,63 @@ class TwitchBot {
       }
     });
   }
+
+  /**
+   * [GiftSubAlert description]
+   * @return {[none]} [description]
+   */
+  GiftSubAlert() {
+    this._client.on('subgift', (channel, username, recipient, method, userstate) => {
+      if (Config.enableCustomMessages) {
+        const giftSubAlertMessages = Config.customMessages[channel].giftsubscriptions;
+        if (giftSubAlertMessages !== undefined) {
+          let rand = 1;
+          if (this._messagesCount.giftSubscriptions !== 1) {
+            rand = RandomNumber(1, this._messagesCount[channel].giftsubscriptions);
+          }
+          const alert = giftSubAlertMessages[`custom${rand}`];
+          let finalAlert = alert.replace(/{{username}}/gi, username);
+          finalAlert = finalAlert.replace(/{{recipient}}/gi, recipient);
+          if (Config.enableMeMode) {
+            this._client.action(channel, finalAlert)
+              .then((data) => {
+                Logger.debug(`GIFTSUBALERT was sent to channel: ${data[0]} for username: ${username} and recipient: ${recipient}`);
+              })
+              .catch((err) => {
+                Logger.error(`GIFTSUBALERT could not be sent (ERROR ${err})`);
+              });
+          } else {
+            this._client.say(channel, finalAlert)
+              .then((data) => {
+                Logger.info(`GIFTSUBALERT was sent to channel: ${data[0]} for username: ${username} and recipient: ${recipient}`);
+              })
+              .catch((err) => {
+                Logger.error(`GIFTSUBALERT could not be sent (ERROR ${err})`);
+              });
+          }
+        } else {
+          Logger.warn(`No custom GIFTSUB messages found for channel: ${channel}! Please check your configuration.`);
+        }
+      } else if (Config.enableMeMode) {
+        this._client.action(channel, `<3 NEW GIFTED SUB Thank you ${username} for gifting ${recipient} a subscription! <3 <3 <3`)
+          .then((data) => {
+            Logger.info(`GIFTSUBALERT was sent to channel: ${data[0]} for username: ${username} and recipient: ${recipient}`);
+          })
+          .catch((err) => {
+            Logger.error(`GIFTSUBALERT could not be sent (ERROR ${err})`);
+          });
+      } else {
+        this._client.say(channel, `<3 NEW GIFTED SUB Thank you ${username} for gifting ${recipient} a subscription! <3 <3 <3`)
+          .then((data) => {
+            Logger.info(`GIFTSUBALERT was sent to channel: ${data[0]} for username: ${username} and recipient: ${recipient}`);
+          })
+          .catch((err) => {
+            Logger.error(`GIFTSUBALERT could not be sent (ERROR ${err})`);
+          });
+      }
+    });
+  }
+
 
   /**
    * [ResubAlert description]
