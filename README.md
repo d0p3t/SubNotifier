@@ -6,10 +6,9 @@
 
 ##### A Simple Sub and Resub Notifier for Twitch Chat
 
-![Version](https://img.shields.io/badge/version-1.0.2-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+![Version](https://img.shields.io/badge/version-1.0.4-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 ### Want to use SubNotifier but need a Host? Follow + Tweet me [@d0p3t](https://twitter.com/d0p3t)
-### I'm giving away 5 hosting plans for this script until November 2017!
 
 </div>
 
