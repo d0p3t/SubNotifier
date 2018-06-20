@@ -80,7 +80,7 @@ class TwitchBot {
         const channel = this._channels[i];
         this._messagesCount.push({ channel: channel });
         const allMsgs = Object.getOwnPropertyNames(Config.customMessages[channel]);
-        this._messagesCount[channel] = { subscriptions: 0, resubscriptions: 0, bits: 0 };
+        this._messagesCount[channel] = { subscriptions: 0, resubscriptions: 0, bits: 0, giftsubscriptions: 0 };
         for (const type of allMsgs) {
           const messagesOfThisType = Config.customMessages[channel][type];
           for (let message in messagesOfThisType) {
