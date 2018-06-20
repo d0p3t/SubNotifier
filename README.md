@@ -1,6 +1,6 @@
 <div align="center">
 
-# SubNotifier (v1.0.3)
+# SubNotifier (v1.0.4)
 
 <img src="http://i.imgur.com/gZkK7Yu.png" width="200px" height="200px">
 
@@ -142,6 +142,11 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 ---
 
 ## Changelog
+v1.0.4 (20 June 2018)
+* Fixed security vulnerabilities
+* Upgraded package.json
+* Fix gift subscription messages not populating correctly
+
 v1.0.3 (16 March 2018)
 * Added gift subscription alerts
 * Switched to twitch-js, a more up-to-date version of tmi.js
