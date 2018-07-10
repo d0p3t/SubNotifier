@@ -77,27 +77,29 @@ class TwitchBot {
       this._messagesCount = [];
 
       for (let i = 0; i < this._channels.length; i += 1) {
-        const channel = this._channels[i];
-        this._messagesCount.push({ channel: channel });
-        const allMsgs = Object.getOwnPropertyNames(Config.customMessages[channel]);
-        this._messagesCount[channel] = { subscriptions: 0, resubscriptions: 0, bits: 0, giftsubscriptions: 0 };
+        const thisChannel = this._channels[i];
+        this._messagesCount.push({ channel: thisChannel });
+        const allMsgs = Object.getOwnPropertyNames(Config.customMessages[thisChannel]);
+        this._messagesCount[thisChannel] = {
+          subscriptions: 0, resubscriptions: 0, bits: 0, giftsubscriptions: 0,
+        };
         for (const type of allMsgs) {
-          const messagesOfThisType = Config.customMessages[channel][type];
-          for (let message in messagesOfThisType) {
-            if (messagesOfThisType.hasOwnProperty(message)) {
-              ++this._messagesCount[channel][`${type}`];
-              Logger.debug(`FOUND [ ${type} ] message for channel [ ${channel} ]`);
+          const messagesOfThisType = Config.customMessages[thisChannel][type];
+          for (const message in messagesOfThisType) {
+            if (Object.prototype.hasOwnProperty.call(messagesOfThisType, message)) {
+              this._messagesCount[thisChannel][`${type}`] = this._messagesCount[thisChannel][`${type}`] + 1;
+              Logger.debug(`FOUND [ ${type} ] message for channel [ ${thisChannel} ]`);
             }
           }
           if (this._messagesCount[type] < 1) {
-            Logger.error(`You MUST have at least 1 custom message for ${type} in channel [ ${channel} ]!`);
+            Logger.error(`You MUST have at least 1 custom message for ${type} in channel [ ${thisChannel} ]!`);
             process.exit(1);
           } else {
-            Logger.debug(`COUNTED ${this._messagesCount[channel][type]} ${type} messages for channel [ ${channel} ]`);
+            Logger.debug(`COUNTED ${this._messagesCount[thisChannel][type]} ${type} messages for channel [ ${thisChannel} ]`);
           }
         }
-        Logger.debug(`TOTAL MESSAGES IN CHANNEL [ ${channel} ] :`);
-        Logger.debug(JSON.stringify(this._messagesCount[channel]));
+        Logger.debug(`TOTAL MESSAGES IN CHANNEL [ ${thisChannel} ] :`);
+        Logger.debug(JSON.stringify(this._messagesCount[thisChannel]));
       }
 
       Logger.info('ENABLED Custom Messages!');
@@ -105,8 +107,7 @@ class TwitchBot {
 
     this._client.connect()
       .then((data) => {
-        Logger.debug(`CONNECTED to chat on ${data[0]}:${data[1]}`);
-        Logger.info('CONNECTED: Waiting for events...');
+        Logger.debug(`CONNECTION ESTABLISHED on ${data[0]}:${data[1]}`);
       })
       .catch((err) => {
         Logger.error(`ERROR Could not connect to chat (${err})`);
@@ -114,6 +115,14 @@ class TwitchBot {
 
     this._client.on('disconnected', (reason) => {
       Logger.warn(`DISCONNECTED from chat, trying to reconnect... (reason: ${reason})`);
+    });
+
+    this._client.on('reconnect', () => {
+      Logger.info('RECONNECTING...');
+    });
+
+    this._client.on('connected', () => {
+      Logger.info('CONNECTED: Waiting for events...');
     });
   }
 
@@ -136,7 +145,7 @@ class TwitchBot {
    * @return {[none]} [description]
    */
   SubAlert() {
-    this._client.on('subscription', (channel, username, method, message, userstate) => {
+    this._client.on('subscription', (channel, username, method, message) => {
       if (Config.enableCustomMessages) {
         const subAlertMessages = Config.customMessages[channel].subscriptions;
         if (subAlertMessages !== undefined) {
@@ -192,7 +201,7 @@ class TwitchBot {
    * @return {[none]} [description]
    */
   GiftSubAlert() {
-    this._client.on('subgift', (channel, username, recipient, method, userstate) => {
+    this._client.on('subgift', (channel, username, recipient) => {
       if (Config.enableCustomMessages) {
         const giftSubAlertMessages = Config.customMessages[channel].giftsubscriptions;
         if (giftSubAlertMessages !== undefined) {
@@ -249,7 +258,7 @@ class TwitchBot {
    * @return {[none]} [description]
    */
   ResubAlert() {
-    this._client.on('resub', (channel, username, months, message, userstate, methods) => {
+    this._client.on('resub', (channel, username, months, message) => {
       if (Config.enableCustomMessages) {
         const resubAlertMessages = Config.customMessages[channel].resubscriptions;
         if (resubAlertMessages !== undefined) {
@@ -262,6 +271,7 @@ class TwitchBot {
           const yearMonths = months % 12;
           let finalAlert = alert.replace(/{{username}}/gi, username);
           finalAlert = finalAlert.replace(/{{months}}/gi, months);
+          finalAlert = finalAlert.replace(/{{message}}/gi, message);
           if (years === 0) {
             finalAlert = finalAlert.replace(/{{years}}/gi, '');
           } else {

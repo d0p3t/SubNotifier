@@ -1,12 +1,12 @@
 <div align="center">
 
-# SubNotifier (v1.0.4)
+# SubNotifier (v1.0.5)
 
 <img src="http://i.imgur.com/gZkK7Yu.png" width="200px" height="200px">
 
 ##### A Simple Sub and Resub Notifier for Twitch Chat
 
-![Version](https://img.shields.io/badge/version-1.0.4-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+![Version](https://img.shields.io/badge/version-1.0.5-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 ### Want to use SubNotifier but need a Host? Follow + Tweet me [@d0p3t](https://twitter.com/d0p3t)
 
@@ -141,6 +141,11 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 ---
 
 ## Changelog
+v1.0.5 (10 July 2018)
+* Added `message` variable support to resubscriptions
+* Added reconnecting and reconnected messages for clarity
+* Fixed linting errors (1 remaining due to twitch-js constructor)
+
 v1.0.4 (20 June 2018)
 * Fixed security vulnerabilities
 * Upgraded package.json

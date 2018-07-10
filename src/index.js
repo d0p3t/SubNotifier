@@ -21,7 +21,8 @@ const bot = new TwitchBot(
   Config.clientId,
   Config.username,
   Config.token,
-  Config.channels);
+  Config.channels,
+);
 
 bot.Start();
 

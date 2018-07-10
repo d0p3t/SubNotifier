@@ -26,44 +26,44 @@ const Config = {
       subscriptions: {
         custom1: 'PogChamp SUB Thank you for subscribing {{username}}',
         custom2: 'CoolStoryBob SUB Thank you for subscribing {{username}}',
-        custom3: 'DansGame SUB Thank you for subscribing {{username}}'
+        custom3: 'DansGame SUB Thank you for subscribing {{username}}',
       },
       giftsubscriptions: {
         custom1: 'PogChamp GIFTED SUB Thank you for gifting {{recipient}} a subscription, {{username}}',
         custom2: 'CoolStoryBob GIFTED SUB Thank you for gifting {{recipient}} a subscription, {{username}}',
-        custom3: 'DansGame GIFTED SUB Thank you for gifting {{recipient}} a subscription, {{username}}'
-      },       
+        custom3: 'DansGame GIFTED SUB Thank you for gifting {{recipient}} a subscription, {{username}}',
+      },
       resubscriptions: {
         custom1: 'PogChamp RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
         custom2: 'WutFace RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
-        custom3: '<3 RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}'
+        custom3: '<3 RESUB Thank you {{username}} for resubscribing for {{months}} months! {{years}}',
       },
       bits: {
         custom1: 'Wowzers, {{username}} cheered {{bits}} BITS!',
         custom2: 'Oh so kind, {{username}} with the {{bits}} BITS!',
-        custom3: 'LUL we got a happy cheerer over here ({{username}}: {{bits}} bits)!'
+        custom3: 'LUL we got a happy cheerer over here ({{username}}: {{bits}} bits)!',
       },
     },
     '#channel2': {
       subscriptions: {
         custom1: '',
         custom2: '',
-        custom3: ''
+        custom3: '',
       },
       giftsubscriptions: {
         custom1: '',
         custom2: '',
-        custom3: ''
-      }, 
+        custom3: '',
+      },
       resubscriptions: {
         custom1: '',
         custom2: '',
-        custom3: ''
+        custom3: '',
       },
       bits: {
         custom1: '',
         custom2: '',
-        custom3: ''
+        custom3: '',
       },
     },
   },
