@@ -18,7 +18,6 @@ const winston = require('winston');
 const WinstonDaily = require('winston-daily-rotate-file');
 const fs = require('fs');
 
-const env = process.env.NODE_ENV || 'development';
 const logDir = 'log';
 
 if (!fs.existsSync(logDir)) {
@@ -36,11 +35,14 @@ export const Logger = new (winston.Logger)({
       prettyPrint: true,
     }),
     new (WinstonDaily)({
-      filename: `${logDir}/-results.log`,
+      filename: '%DATE%-subnotifier.log',
+      dirname: `${logDir}`,
       timestamp: tsFormat,
-      datePattern: 'yyyy-MM-dd',
-      prepend: true,
-      level: env === 'development' ? 'verbose' : 'info',
+      datePattern: 'YYYY-MM',
+      maxSize: '20m',
+      json: true,
+      prettyPrint: true,
+      level: process.env.NODE_ENV === 'development' ? 'verbose' : 'info',
     }),
   ],
 });
