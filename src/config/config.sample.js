@@ -20,6 +20,7 @@ const Config = {
   enableGiftSubAlerts: true,
   enableResubAlerts: true,
   enableBitAlerts: false,
+  enableBitsThresholdMessage: true,
   enableCustomMessages: true,
   customMessages: {
     '#d0p3t': {
@@ -43,6 +44,15 @@ const Config = {
         custom2: 'Oh so kind, {{username}} with the {{bits}} BITS!',
         custom3: 'LUL we got a happy cheerer over here ({{username}}: {{bits}} bits)!',
       },
+      bitsThresholds: {
+        1000: '1000 BITS from {{username}} with the message {{message}}!',
+        5000: '5000 BITS!',
+        10000: '10000 BITS!',
+        25000: '25000 BITS!',
+        50000: '50000 BITS!',
+        75000: '75000 BITS!',
+        100000: '100000 BITS!',
+      },
     },
     '#channel2': {
       subscriptions: {
@@ -64,6 +74,15 @@ const Config = {
         custom1: '',
         custom2: '',
         custom3: '',
+      },
+      bitsThresholds: {
+        1000: '',
+        5000: '',
+        10000: '',
+        25000: '',
+        50000: '',
+        75000: '',
+        100000: '',
       },
     },
   },

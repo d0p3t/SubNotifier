@@ -1,6 +1,6 @@
 {
   "name": "twitch-subnotifier",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Sub and Resub Notifier for Twitch.TV Chat",
   "main": "lib/index.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "nodemon": "^1.17.5"
   },
   "dependencies": {
-    "twitch-js": "^1.2.12",
+    "twitch-js": "^1.2.14",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^3.2.1"
   }

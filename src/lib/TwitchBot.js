@@ -324,35 +324,63 @@ class TwitchBot {
   BitAlert() {
     this._client.on('cheer', (channel, userstate, message) => {
       if (Config.enableCustomMessages) {
-        const bitAlertMessages = Config.customMessages[channel].bits;
-        if (bitAlertMessages !== undefined) {
-          let rand = 1;
-          if (this._messagesCount.bits !== 1) {
-            rand = RandomNumber(1, this._messagesCount[channel].bits);
-          }
-          const alert = bitAlertMessages[`custom${rand}`];
-          let finalAlert = alert.replace(/{{username}}/gi, userstate.username);
-          finalAlert = finalAlert.replace(/{{bits}}/gi, userstate.bits);
-          finalAlert = finalAlert.replace(/{{message}}/gi, message);
-          if (Config.enableMeMode) {
-            this._client.action(channel, finalAlert)
-              .then((data) => {
-                Logger.info(`BITALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
-              })
-              .catch((err) => {
-                Logger.error(`BITALERT could not be sent (ERROR ${err})`);
-              });
+        if(Object.keys(Config.customMessages[channel].bitsThresholds).indexOf(userstate.bits) != -1 && Config.enableBitsThresholdMessages){
+          let alert = Config.customMessages[channel].bitsThresholds[userstate.bits];
+          if(alert !== undefined){
+            let finalAlert = alert.replace(/{{username}}/gi, userstate.username);
+            finalAlert = finalAlert.replace(/{{message}}/gi, message);
+            if (Config.enableMeMode) {
+              this._client.action(channel, finalAlert)
+                .then((data) => {
+                  Logger.info(`BITTHRESHOLDALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+                })
+                .catch((err) => {
+                  Logger.error(`BITTHRESHOLDALERT could not be sent (ERROR ${err})`);
+                });
+            } else {
+              this._client.say(channel, finalAlert)
+                .then((data) => {
+                  Logger.info(`BITTHRESHOLDALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+                })
+                .catch((err) => {
+                  Logger.error(`BITTHRESHOLDALERT could not be sent (ERROR ${err})`);
+                });
+            }            
           } else {
-            this._client.say(channel, finalAlert)
-              .then((data) => {
-                Logger.info(`BITALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
-              })
-              .catch((err) => {
-                Logger.error(`BITALERT could not be sent (ERROR ${err})`);
-              });
+            Logger.warn(`No custom BIT THRESHOLD message found for ${userstate.bits} in channel: ${channel}! Please check your configuration.`);
           }
-        } else {
-          Logger.warn(`No custom BIT messages found for channel: ${channel}! Please check your configuration.`);
+        }
+        else {
+          const bitAlertMessages = Config.customMessages[channel].bits;
+          if (bitAlertMessages !== undefined) {
+            let rand = 1;
+            if (this._messagesCount.bits !== 1) {
+              rand = RandomNumber(1, this._messagesCount[channel].bits);
+            }
+            const alert = bitAlertMessages[`custom${rand}`];
+            let finalAlert = alert.replace(/{{username}}/gi, userstate.username);
+            finalAlert = finalAlert.replace(/{{bits}}/gi, userstate.bits);
+            finalAlert = finalAlert.replace(/{{message}}/gi, message);
+            if (Config.enableMeMode) {
+              this._client.action(channel, finalAlert)
+                .then((data) => {
+                  Logger.info(`BITALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+                })
+                .catch((err) => {
+                  Logger.error(`BITALERT could not be sent (ERROR ${err})`);
+                });
+            } else {
+              this._client.say(channel, finalAlert)
+                .then((data) => {
+                  Logger.info(`BITALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+                })
+                .catch((err) => {
+                  Logger.error(`BITALERT could not be sent (ERROR ${err})`);
+                });
+            }
+          } else {
+            Logger.warn(`No custom BIT messages found for channel: ${channel}! Please check your configuration.`);
+          }
         }
       } else if (Config.enableMeMode) {
         this._client.action(channel, `FutureMan BITS Thank you ${userstate.username} for the ${userstate.bits} bits!`)

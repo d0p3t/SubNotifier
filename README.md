@@ -14,7 +14,7 @@
 
 ## Features
 * Chat alerts on subscriptions, subscription gifting and resubscriptions
-* Chat alerts on bits cheered
+* Chat alerts on bits cheered including custom thresholds (i.e. 5000 bits)
 * Add your own custom alert messages for every channel and chat alert
 * Easy configuration with ability to enable/disable features
 * Multi channel support
@@ -76,12 +76,12 @@ Within the chat alerts you can use various variables. Below is a list of availab
 
 | Variable        | Description           | Uses  |
 |---------------|-------------|-----|
-| {{username}}    | Displays the username of the (re)subscriber/cheerer | subscriptions, resubscriptions, bits |
+| {{username}}    | Displays the username of the (re)subscriber/cheerer | subscriptions, resubscriptions, bits, bitsThresholds |
 | {{months}}      | Number of months resubscribed      | resubscriptions |
 | {{years}}       | Displays # years if 1 year or more (as `[ X year(s) and X month(s) ]`) | resubscriptions |
 | {{bits}}        | Amount of bits cheered | bits |
-| {{message}}        | Message sent with event | subscriptions, resubscriptions, bits |
-| {{recipient}}   | Recipient of a giften subscription  | gifted subscriptions  |
+| {{message}}        | Message sent with event | subscriptions, resubscriptions, bits, bitsThresholds |
+| {{recipient}}   | Recipient of a gifted subscription | giftsubscriptions |
 
 ```javascript
 '#d0p3t': {
@@ -101,6 +101,15 @@ Within the chat alerts you can use various variables. Below is a list of availab
     custom1: 'Wowzers, {{username}} cheered {{bits}} BITS!',
     custom2: 'Oh so kind, {{username}} with the {{bits}} BITS!',
     custom3: 'LUL we got a happy cheerer over here ({{username}}: {{bits}} bits)!' },
+    bitsThresholds: {
+      1000: '1000 BITS from {{username}} with the message {{message}}!',
+      5000: '{{username}} just sent 5000 BITS our way! What an amazing person',
+      10000: 'This is insane, 10000 BITS from {{username}}!',
+      25000: '25000 BITS! I don\'t know what to say, {{username}}',
+      50000: '50000 BITS from {{username}} and they said: {{message}}!',
+      75000: '75000 BITS cheers by the gracious {{username}}!',
+      100000: 'What does heaven feel like? Right, 100000 BITS from {{username}}!',
+    },
 },
 ```
 
@@ -141,6 +150,10 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 ---
 
 ## Changelog
+v1.0.6 (04 September 2018)
+* Added `bitThresholds` allowing for custom message for a custom bit amount. Thanks to [6mas](https://twitter.com/MR6MAS) for the suggestion in [i15] . If there are bugs, please let me know as I'm unable to test this.
+* Upgraded [twitch-js](https://github.com/twitch-apis/twitch-js) to v1.2.14
+
 v1.0.5 (10 July 2018)
 * Added `message` variable support to resubscriptions
 * Added reconnecting and reconnected messages for clarity
@@ -148,7 +161,7 @@ v1.0.5 (10 July 2018)
 
 v1.0.4 (20 June 2018)
 * Fixed security vulnerabilities
-* Upgraded package.json
+* Upgraded `package.json`
 * Fix gift subscription messages not populating correctly
 
 v1.0.3 (16 March 2018)
