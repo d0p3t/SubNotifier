@@ -27,6 +27,6 @@
   "dependencies": {
     "twitch-js": "^1.2.14",
     "winston": "^2.3.1",
-    "winston-daily-rotate-file": "^3.3.3"
+    "winston-daily-rotate-file": "^3.4.0"
   }
 }
