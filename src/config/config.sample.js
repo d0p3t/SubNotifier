@@ -9,9 +9,9 @@
  * @type {Object}
  */
 const Config = {
-  clientId: '',
-  username: '',
-  token: '',
+  clientId: process.env.CLIENT_ID || '',
+  username: process.env.USERNAME || '',
+  token: process.env.TOKEN || '',
   channels: ['#d0p3t', '#channel2'],
   enableDebug: false,
   enableSecureMode: true,

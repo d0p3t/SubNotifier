@@ -1,0 +1,13 @@
+language: node_js
+node_js: 
+  - "node"
+cache:
+  directories:
+    - node_modules
+before_script:
+  - npm install
+  - cp $TRAVIS_BUILD_DIR/SubNotifier/src/config/config.sample.js $TRAVIS_BUILD_DIR/SubNotifier/src/config/config.js
+  # - npm run build
+script:
+  - npm run build
+  # - CLIENT_ID=$CLIENT_ID USERNAME=$USERNAME TOKEN=$TOKEN npm run test
