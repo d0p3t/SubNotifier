@@ -25,6 +25,7 @@
       "allowAfterThis": true
     }],
     "import/prefer-default-export": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "max-len": "off"
   }
 }
