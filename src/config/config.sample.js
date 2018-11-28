@@ -20,7 +20,7 @@ const Config = {
   enableGiftSubAlerts: true,
   enableResubAlerts: true,
   enableBitAlerts: false,
-  enableBitsThresholdMessage: true,
+  enableBitsThresholdMessages: true,
   enableCustomMessages: true,
   customMessages: {
     '#d0p3t': {
