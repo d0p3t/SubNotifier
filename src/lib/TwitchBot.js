@@ -252,7 +252,6 @@ class TwitchBot {
     });
   }
 
-
   /**
    * [ResubAlert description]
    * @return {[none]} [description]
@@ -324,9 +323,9 @@ class TwitchBot {
   BitAlert() {
     this._client.on('cheer', (channel, userstate, message) => {
       if (Config.enableCustomMessages) {
-        if(Object.keys(Config.customMessages[channel].bitsThresholds).indexOf(userstate.bits) != -1 && Config.enableBitsThresholdMessages){
+        if (Object.keys(Config.customMessages[channel].bitsThresholds).indexOf(userstate.bits) != -1 && Config.enableBitsThresholdMessages) {
           let alert = Config.customMessages[channel].bitsThresholds[userstate.bits];
-          if(alert !== undefined){
+          if (alert !== undefined) {
             let finalAlert = alert.replace(/{{username}}/gi, userstate.username);
             finalAlert = finalAlert.replace(/{{message}}/gi, message);
             if (Config.enableMeMode) {
@@ -345,7 +344,7 @@ class TwitchBot {
                 .catch((err) => {
                   Logger.error(`BITTHRESHOLDALERT could not be sent (ERROR ${err})`);
                 });
-            }            
+            }
           } else {
             Logger.warn(`No custom BIT THRESHOLD message found for ${userstate.bits} in channel: ${channel}! Please check your configuration.`);
           }
