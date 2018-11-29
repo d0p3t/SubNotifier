@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-import { TwitchBot } from './lib/TwitchBot';
+import { TwitchBot } from './lib/TwitchBotv2';
 import { Config } from './config/config';
 
 const bot = new TwitchBot(
@@ -23,21 +23,3 @@ const bot = new TwitchBot(
   Config.token,
   Config.channels,
 );
-
-bot.Start();
-
-if (Config.enableSubAlerts) {
-  bot.SubAlert();
-}
-
-if (Config.enableGiftSubAlerts) {
-  bot.GiftSubAlert();
-}
-
-if (Config.enableResubAlerts) {
-  bot.ResubAlert();
-}
-
-if (Config.enableBitAlerts) {
-  bot.BitAlert();
-}

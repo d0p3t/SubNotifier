@@ -1,6 +1,6 @@
 <div align="center">
 
-# SubNotifier (v1.0.6)
+# SubNotifier (v2.0.0-experimental)
 
 <img src="http://i.imgur.com/gZkK7Yu.png" width="200px" height="200px">
 
@@ -8,7 +8,7 @@
 
 ![Version](https://img.shields.io/badge/version-1.0.6-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
-### Want to use SubNotifier but need a Host? Follow + Tweet me [@d0p3t](https://twitter.com/d0p3t)
+### DO NOT USE! This development branch is for the rewrite of SubNotifier for version 2. This is not done and does not work.
 
 </div>
 
@@ -50,6 +50,9 @@ If you are a developer or want to debug go into _**Development Mode**_
 
 ## Configuration
 A configuration file can be found in `./src/config/config.sample.js`. Configure all settings as you desire and rename the file to `config.js`. If you are running in the production environment you will have to rebuild with `npm run build` everytime you change something in the configuration file.
+
+**NEW!** You can now use environment variables for the ClientId, Username, and Token.
+`USERNAME=d0p3t TOKEN=oauth:lxwjkpuk4f92hv5prs2194hv8jykkj CLIENT_ID=saxy9f3bqyaj31s4dg3fkujauwsr7c npm run serve`
 
 ### Connecting to Twitch Chat
 To be able to connect to Twitch chat, you have to register an application and get an OAuth token with the correct scopes. You will also have to specify at least one channel. Please keep in mind that you need custom alerts for each channel if you have `enableCustomMessages: true`.
@@ -150,6 +153,14 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 ---
 
 ## Changelog
+v2.0.0-experimental (29 November 2018)
+* **DO NOT USE**
+* Started rewrite for a more modular approach
+
+v1.0.6.1 (28 November 2018)
+* Fixed event-stream vulnerability
+* Added support for environment variables (see Configuration)
+
 v1.0.6 (04 September 2018)
 * Added `bitThresholds` allowing for custom message for a custom bit amount. Thanks to [6mas](https://twitter.com/MR6MAS) for the suggestion in [i15] . If there are bugs, please let me know as I'm unable to test this.
 * Upgraded [twitch-js](https://github.com/twitch-apis/twitch-js) to v1.2.14
