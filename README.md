@@ -36,25 +36,25 @@
 ## Quickstart
 
 1. Install [NodeJS](https://nodejs.org/en/download/)
-2. Clone or download the repository
+2. Download and Extract [Latest Release](https://github.com/d0p3t/SubNotifier/releases)
 3. Open a terminal window and navigate to the directory
 4. Install dependencies `npm install`
-5. Edit `src/config/config.sample.js` and rename to `config.js`
+5. Edit `config/config.js`
 
-(**HIGHLY RECOMMENDED**) Build and run the application in _**Production Mode**_
+(**HIGHLY RECOMMENDED**) Start the application in _**Production Mode**_
 
-- Build `npm run build` then `npm run serve`
+- `npm start`
 
-If you are a developer or want to debug go into _**Development Mode**_
+If you are a developer go into _**Development Mode**_ (Requires Source Code)
 
 - Set `process.env.NODE_ENV = "development"`
-- Start `npm start`
+- Start `npm dev`
 
 ---
 
 ## Configuration
 
-A configuration file can be found in `./src/config/config.sample.js`. Configure all settings as you desire and rename the file to `config.js`. If you are running in the production environment you will have to rebuild with `npm run build` everytime you change something in the configuration file.
+A configuration file can be found in `./config/config.js`. Configure all settings as you desire.
 
 ### Connecting to Twitch Chat
 
@@ -165,6 +165,8 @@ v1.0.7 (01 February 2019)
 - Modified debug mode. Enable now via `process.env.NODE_ENV = "development"`
 - Fixed logger for winston v3
 - Changed to daily logging w/ 14 days retention
+- Automatic Deployment
+- Updated Quickstart
 
 v1.0.6 (04 September 2018)
 

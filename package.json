@@ -4,9 +4,10 @@
   "description": "Sub and Resub Notifier for Twitch.TV Chat",
   "main": "lib/index.js",
   "scripts": {
-    "start": "nodemon src/index.js --exec babel-node --presets es2015,stage-2",
+    "start": "node index.js",
     "build": "babel src -d dist",
     "serve": "node dist/index.js",
+    "dev": "nodemon src/index.js --exec babel-node --presets es2015,stage-2",
     "zip": "cp README.md dist/ && cp LICENSE.md dist/ && cp package.json dist/ && cp package-lock.json dist/ && cd dist && zip -r -X ../subnotifier.zip .",
     "test": "mocha --require babel-polyfill --require babel-register"
   },
