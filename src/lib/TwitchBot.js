@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 REMCO TROOST <d0p3t89@gmail.com>
+ * Copyright (c) 2019 REMCO TROOST <d0p3t89@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -48,14 +48,10 @@ class TwitchBot {
   Start() {
     Logger.info('STARTING SubNotifier...');
 
-    if (Config.enableDebug) {
-      Logger.transports.console.level = 'debug';
-    }
-
     this._options = {
       options: {
         clientId: this._clientId,
-        debug: Config.enableDebug,
+        debug: process.env.NODE_ENV === 'development' ? true : false,
       },
       connection: {
         reconnect: true,
@@ -79,23 +75,39 @@ class TwitchBot {
       for (let i = 0; i < this._channels.length; i += 1) {
         const thisChannel = this._channels[i];
         this._messagesCount.push({ channel: thisChannel });
-        const allMsgs = Object.getOwnPropertyNames(Config.customMessages[thisChannel]);
+        const allMsgs = Object.getOwnPropertyNames(
+          Config.customMessages[thisChannel]
+        );
         this._messagesCount[thisChannel] = {
-          subscriptions: 0, resubscriptions: 0, bits: 0, giftsubscriptions: 0,
+          subscriptions: 0,
+          resubscriptions: 0,
+          bits: 0,
+          giftsubscriptions: 0,
         };
         for (const type of allMsgs) {
           const messagesOfThisType = Config.customMessages[thisChannel][type];
           for (const message in messagesOfThisType) {
-            if (Object.prototype.hasOwnProperty.call(messagesOfThisType, message)) {
-              this._messagesCount[thisChannel][`${type}`] = this._messagesCount[thisChannel][`${type}`] + 1;
-              Logger.debug(`FOUND [ ${type} ] message for channel [ ${thisChannel} ]`);
+            if (
+              Object.prototype.hasOwnProperty.call(messagesOfThisType, message)
+            ) {
+              this._messagesCount[thisChannel][`${type}`] =
+                this._messagesCount[thisChannel][`${type}`] + 1;
+              Logger.debug(
+                `FOUND [ ${type} ] message for channel [ ${thisChannel} ]`
+              );
             }
           }
           if (this._messagesCount[type] < 1) {
-            Logger.error(`You MUST have at least 1 custom message for ${type} in channel [ ${thisChannel} ]!`);
+            Logger.error(
+              `You MUST have at least 1 custom message for ${type} in channel [ ${thisChannel} ]!`
+            );
             process.exit(1);
           } else {
-            Logger.debug(`COUNTED ${this._messagesCount[thisChannel][type]} ${type} messages for channel [ ${thisChannel} ]`);
+            Logger.debug(
+              `COUNTED ${
+                this._messagesCount[thisChannel][type]
+              } ${type} messages for channel [ ${thisChannel} ]`
+            );
           }
         }
         Logger.debug(`TOTAL MESSAGES IN CHANNEL [ ${thisChannel} ] :`);
@@ -105,16 +117,19 @@ class TwitchBot {
       Logger.info('ENABLED Custom Messages!');
     }
 
-    this._client.connect()
-      .then((data) => {
+    this._client
+      .connect()
+      .then(data => {
         Logger.debug(`CONNECTION ESTABLISHED on ${data[0]}:${data[1]}`);
       })
-      .catch((err) => {
+      .catch(err => {
         Logger.error(`ERROR Could not connect to chat (${err})`);
       });
 
-    this._client.on('disconnected', (reason) => {
-      Logger.warn(`DISCONNECTED from chat, trying to reconnect... (reason: ${reason})`);
+    this._client.on('disconnected', reason => {
+      Logger.warn(
+        `DISCONNECTED from chat, trying to reconnect... (reason: ${reason})`
+      );
     });
 
     this._client.on('reconnect', () => {
@@ -131,11 +146,12 @@ class TwitchBot {
    * @return {[none]} [description]
    */
   Stop() {
-    this._client.disconnect()
-      .then((data) => {
+    this._client
+      .disconnect()
+      .then(data => {
         Logger.info(`DISCONNECTED from ${data.server}:${data.port}`);
       })
-      .catch((err) => {
+      .catch(err => {
         Logger.error(`ERROR Could not disconnect (${err})`);
       });
   }
@@ -157,39 +173,67 @@ class TwitchBot {
           let finalAlert = alert.replace(/{{username}}/gi, username);
           finalAlert = finalAlert.replace(/{{message}}/gi, message);
           if (Config.enableMeMode) {
-            this._client.action(channel, finalAlert)
-              .then((data) => {
-                Logger.debug(`SUBALERT was sent to channel: ${data[0]} for username: ${username}`);
+            this._client
+              .action(channel, finalAlert)
+              .then(data => {
+                Logger.debug(
+                  `SUBALERT was sent to channel: ${
+                    data[0]
+                  } for username: ${username}`
+                );
               })
-              .catch((err) => {
+              .catch(err => {
                 Logger.error(`SUBALERT could not be sent (ERROR ${err})`);
               });
           } else {
-            this._client.say(channel, finalAlert)
-              .then((data) => {
-                Logger.info(`SUBALERT was sent to channel: ${data[0]} for username: ${username}`);
+            this._client
+              .say(channel, finalAlert)
+              .then(data => {
+                Logger.info(
+                  `SUBALERT was sent to channel: ${
+                    data[0]
+                  } for username: ${username}`
+                );
               })
-              .catch((err) => {
+              .catch(err => {
                 Logger.error(`SUBALERT could not be sent (ERROR ${err})`);
               });
           }
         } else {
-          Logger.warn(`No custom SUB messages found for channel: ${channel}! Please check your configuration.`);
+          Logger.warn(
+            `No custom SUB messages found for channel: ${channel}! Please check your configuration.`
+          );
         }
       } else if (Config.enableMeMode) {
-        this._client.action(channel, `<3 NEW SUB Thank you ${username} for subscribing! <3 <3 <3`)
-          .then((data) => {
-            Logger.info(`SUBALERT was sent to channel: ${data[0]} for username: ${username}`);
+        this._client
+          .action(
+            channel,
+            `<3 NEW SUB Thank you ${username} for subscribing! <3 <3 <3`
+          )
+          .then(data => {
+            Logger.info(
+              `SUBALERT was sent to channel: ${
+                data[0]
+              } for username: ${username}`
+            );
           })
-          .catch((err) => {
+          .catch(err => {
             Logger.error(`SUBALERT could not be sent (ERROR ${err})`);
           });
       } else {
-        this._client.say(channel, `<3 NEW SUB Thank you ${username} for subscribing! <3 <3 <3`)
-          .then((data) => {
-            Logger.info(`SUBALERT was sent to channel: ${data[0]} for username: ${username}`);
+        this._client
+          .say(
+            channel,
+            `<3 NEW SUB Thank you ${username} for subscribing! <3 <3 <3`
+          )
+          .then(data => {
+            Logger.info(
+              `SUBALERT was sent to channel: ${
+                data[0]
+              } for username: ${username}`
+            );
           })
-          .catch((err) => {
+          .catch(err => {
             Logger.error(`SUBALERT could not be sent (ERROR ${err})`);
           });
       }
@@ -203,55 +247,86 @@ class TwitchBot {
   GiftSubAlert() {
     this._client.on('subgift', (channel, username, recipient) => {
       if (Config.enableCustomMessages) {
-        const giftSubAlertMessages = Config.customMessages[channel].giftsubscriptions;
+        const giftSubAlertMessages =
+          Config.customMessages[channel].giftsubscriptions;
         if (giftSubAlertMessages !== undefined) {
           let rand = 1;
           if (this._messagesCount.giftSubscriptions !== 1) {
-            rand = RandomNumber(1, this._messagesCount[channel].giftsubscriptions);
+            rand = RandomNumber(
+              1,
+              this._messagesCount[channel].giftsubscriptions
+            );
           }
           const alert = giftSubAlertMessages[`custom${rand}`];
           let finalAlert = alert.replace(/{{username}}/gi, username);
           finalAlert = finalAlert.replace(/{{recipient}}/gi, recipient);
           if (Config.enableMeMode) {
-            this._client.action(channel, finalAlert)
-              .then((data) => {
-                Logger.debug(`GIFTSUBALERT was sent to channel: ${data[0]} for username: ${username} and recipient: ${recipient}`);
+            this._client
+              .action(channel, finalAlert)
+              .then(data => {
+                Logger.debug(
+                  `GIFTSUBALERT was sent to channel: ${
+                    data[0]
+                  } for username: ${username} and recipient: ${recipient}`
+                );
               })
-              .catch((err) => {
+              .catch(err => {
                 Logger.error(`GIFTSUBALERT could not be sent (ERROR ${err})`);
               });
           } else {
-            this._client.say(channel, finalAlert)
-              .then((data) => {
-                Logger.info(`GIFTSUBALERT was sent to channel: ${data[0]} for username: ${username} and recipient: ${recipient}`);
+            this._client
+              .say(channel, finalAlert)
+              .then(data => {
+                Logger.info(
+                  `GIFTSUBALERT was sent to channel: ${
+                    data[0]
+                  } for username: ${username} and recipient: ${recipient}`
+                );
               })
-              .catch((err) => {
+              .catch(err => {
                 Logger.error(`GIFTSUBALERT could not be sent (ERROR ${err})`);
               });
           }
         } else {
-          Logger.warn(`No custom GIFTSUB messages found for channel: ${channel}! Please check your configuration.`);
+          Logger.warn(
+            `No custom GIFTSUB messages found for channel: ${channel}! Please check your configuration.`
+          );
         }
       } else if (Config.enableMeMode) {
-        this._client.action(channel, `<3 NEW GIFTED SUB Thank you ${username} for gifting ${recipient} a subscription! <3 <3 <3`)
-          .then((data) => {
-            Logger.info(`GIFTSUBALERT was sent to channel: ${data[0]} for username: ${username} and recipient: ${recipient}`);
+        this._client
+          .action(
+            channel,
+            `<3 NEW GIFTED SUB Thank you ${username} for gifting ${recipient} a subscription! <3 <3 <3`
+          )
+          .then(data => {
+            Logger.info(
+              `GIFTSUBALERT was sent to channel: ${
+                data[0]
+              } for username: ${username} and recipient: ${recipient}`
+            );
           })
-          .catch((err) => {
+          .catch(err => {
             Logger.error(`GIFTSUBALERT could not be sent (ERROR ${err})`);
           });
       } else {
-        this._client.say(channel, `<3 NEW GIFTED SUB Thank you ${username} for gifting ${recipient} a subscription! <3 <3 <3`)
-          .then((data) => {
-            Logger.info(`GIFTSUBALERT was sent to channel: ${data[0]} for username: ${username} and recipient: ${recipient}`);
+        this._client
+          .say(
+            channel,
+            `<3 NEW GIFTED SUB Thank you ${username} for gifting ${recipient} a subscription! <3 <3 <3`
+          )
+          .then(data => {
+            Logger.info(
+              `GIFTSUBALERT was sent to channel: ${
+                data[0]
+              } for username: ${username} and recipient: ${recipient}`
+            );
           })
-          .catch((err) => {
+          .catch(err => {
             Logger.error(`GIFTSUBALERT could not be sent (ERROR ${err})`);
           });
       }
     });
   }
-
 
   /**
    * [ResubAlert description]
@@ -260,11 +335,15 @@ class TwitchBot {
   ResubAlert() {
     this._client.on('resub', (channel, username, months, message) => {
       if (Config.enableCustomMessages) {
-        const resubAlertMessages = Config.customMessages[channel].resubscriptions;
+        const resubAlertMessages =
+          Config.customMessages[channel].resubscriptions;
         if (resubAlertMessages !== undefined) {
           let rand = 1;
           if (this._messagesCount.resubscriptions !== 1) {
-            rand = RandomNumber(1, this._messagesCount[channel].resubscriptions);
+            rand = RandomNumber(
+              1,
+              this._messagesCount[channel].resubscriptions
+            );
           }
           const alert = resubAlertMessages[`custom${rand}`];
           const years = Math.floor(months / 12);
@@ -275,42 +354,73 @@ class TwitchBot {
           if (years === 0) {
             finalAlert = finalAlert.replace(/{{years}}/gi, '');
           } else {
-            finalAlert = finalAlert.replace(/{{years}}/gi, `[ ${years} year(s) and ${yearMonths} month(s) ]`);
+            finalAlert = finalAlert.replace(
+              /{{years}}/gi,
+              `[ ${years} year(s) and ${yearMonths} month(s) ]`
+            );
           }
           if (Config.enableMeMode) {
-            this._client.action(channel, finalAlert)
-              .then((data) => {
-                Logger.info(`RESUBALERT was sent to channel: ${data[0]} for username: ${username} [ ${months} months ]`);
+            this._client
+              .action(channel, finalAlert)
+              .then(data => {
+                Logger.info(
+                  `RESUBALERT was sent to channel: ${
+                    data[0]
+                  } for username: ${username} [ ${months} months ]`
+                );
               })
-              .catch((err) => {
+              .catch(err => {
                 Logger.error(`RESUBALERT could not be sent (ERROR ${err})`);
               });
           } else {
-            this._client.say(channel, finalAlert)
-              .then((data) => {
-                Logger.info(`RESUBALERT was sent to channel: ${data[0]} for username: ${username} [ ${months} months ]`);
+            this._client
+              .say(channel, finalAlert)
+              .then(data => {
+                Logger.info(
+                  `RESUBALERT was sent to channel: ${
+                    data[0]
+                  } for username: ${username} [ ${months} months ]`
+                );
               })
-              .catch((err) => {
+              .catch(err => {
                 Logger.error(`RESUBALERT could not be sent (ERROR ${err})`);
               });
           }
         } else {
-          Logger.warn(`No custom RESUB messages found for channel: ${channel}! Please check your configuration.`);
+          Logger.warn(
+            `No custom RESUB messages found for channel: ${channel}! Please check your configuration.`
+          );
         }
       } else if (Config.enableMeMode) {
-        this._client.action(channel, `<3 RESUB Thank you ${username} for resubscribing for ${months} months! <3 <3 <3`)
-          .then((data) => {
-            Logger.info(`RESUBALERT was sent to channel: ${data[0]} for username: ${username} [ ${months} months ]`);
+        this._client
+          .action(
+            channel,
+            `<3 RESUB Thank you ${username} for resubscribing for ${months} months! <3 <3 <3`
+          )
+          .then(data => {
+            Logger.info(
+              `RESUBALERT was sent to channel: ${
+                data[0]
+              } for username: ${username} [ ${months} months ]`
+            );
           })
-          .catch((err) => {
+          .catch(err => {
             Logger.error(`RESUBALERT could not be sent (ERROR ${err})`);
           });
       } else {
-        this._client.say(channel, `<3 RESUB Thank you ${username} for resubscribing for ${months} months! <3 <3 <3`)
-          .then((data) => {
-            Logger.info(`RESUBALERT was sent to channel: ${data[0]} for username: ${username} [ ${months} months ]`);
+        this._client
+          .say(
+            channel,
+            `<3 RESUB Thank you ${username} for resubscribing for ${months} months! <3 <3 <3`
+          )
+          .then(data => {
+            Logger.info(
+              `RESUBALERT was sent to channel: ${
+                data[0]
+              } for username: ${username} [ ${months} months ]`
+            );
           })
-          .catch((err) => {
+          .catch(err => {
             Logger.error(`RESUBALERT could not be sent (ERROR ${err})`);
           });
       }
@@ -324,33 +434,63 @@ class TwitchBot {
   BitAlert() {
     this._client.on('cheer', (channel, userstate, message) => {
       if (Config.enableCustomMessages) {
-        if(Object.keys(Config.customMessages[channel].bitsThresholds).indexOf(userstate.bits) != -1 && Config.enableBitsThresholdMessages){
-          let alert = Config.customMessages[channel].bitsThresholds[userstate.bits];
-          if(alert !== undefined){
-            let finalAlert = alert.replace(/{{username}}/gi, userstate.username);
+        if (
+          Object.keys(Config.customMessages[channel].bitsThresholds).indexOf(
+            userstate.bits
+          ) != -1 &&
+          Config.enableBitsThresholdMessages
+        ) {
+          let alert =
+            Config.customMessages[channel].bitsThresholds[userstate.bits];
+          if (alert !== undefined) {
+            let finalAlert = alert.replace(
+              /{{username}}/gi,
+              userstate.username
+            );
             finalAlert = finalAlert.replace(/{{message}}/gi, message);
             if (Config.enableMeMode) {
-              this._client.action(channel, finalAlert)
-                .then((data) => {
-                  Logger.info(`BITTHRESHOLDALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+              this._client
+                .action(channel, finalAlert)
+                .then(data => {
+                  Logger.info(
+                    `BITTHRESHOLDALERT was sent to channel: ${
+                      data[0]
+                    } for username: ${userstate.username} [ ${
+                      userstate.bits
+                    } bits ]`
+                  );
                 })
-                .catch((err) => {
-                  Logger.error(`BITTHRESHOLDALERT could not be sent (ERROR ${err})`);
+                .catch(err => {
+                  Logger.error(
+                    `BITTHRESHOLDALERT could not be sent (ERROR ${err})`
+                  );
                 });
             } else {
-              this._client.say(channel, finalAlert)
-                .then((data) => {
-                  Logger.info(`BITTHRESHOLDALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+              this._client
+                .say(channel, finalAlert)
+                .then(data => {
+                  Logger.info(
+                    `BITTHRESHOLDALERT was sent to channel: ${
+                      data[0]
+                    } for username: ${userstate.username} [ ${
+                      userstate.bits
+                    } bits ]`
+                  );
                 })
-                .catch((err) => {
-                  Logger.error(`BITTHRESHOLDALERT could not be sent (ERROR ${err})`);
+                .catch(err => {
+                  Logger.error(
+                    `BITTHRESHOLDALERT could not be sent (ERROR ${err})`
+                  );
                 });
-            }            
+            }
           } else {
-            Logger.warn(`No custom BIT THRESHOLD message found for ${userstate.bits} in channel: ${channel}! Please check your configuration.`);
+            Logger.warn(
+              `No custom BIT THRESHOLD message found for ${
+                userstate.bits
+              } in channel: ${channel}! Please check your configuration.`
+            );
           }
-        }
-        else {
+        } else {
           const bitAlertMessages = Config.customMessages[channel].bits;
           if (bitAlertMessages !== undefined) {
             let rand = 1;
@@ -358,44 +498,79 @@ class TwitchBot {
               rand = RandomNumber(1, this._messagesCount[channel].bits);
             }
             const alert = bitAlertMessages[`custom${rand}`];
-            let finalAlert = alert.replace(/{{username}}/gi, userstate.username);
+            let finalAlert = alert.replace(
+              /{{username}}/gi,
+              userstate.username
+            );
             finalAlert = finalAlert.replace(/{{bits}}/gi, userstate.bits);
             finalAlert = finalAlert.replace(/{{message}}/gi, message);
             if (Config.enableMeMode) {
-              this._client.action(channel, finalAlert)
-                .then((data) => {
-                  Logger.info(`BITALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+              this._client
+                .action(channel, finalAlert)
+                .then(data => {
+                  Logger.info(
+                    `BITALERT was sent to channel: ${data[0]} for username: ${
+                      userstate.username
+                    } [ ${userstate.bits} bits ]`
+                  );
                 })
-                .catch((err) => {
+                .catch(err => {
                   Logger.error(`BITALERT could not be sent (ERROR ${err})`);
                 });
             } else {
-              this._client.say(channel, finalAlert)
-                .then((data) => {
-                  Logger.info(`BITALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+              this._client
+                .say(channel, finalAlert)
+                .then(data => {
+                  Logger.info(
+                    `BITALERT was sent to channel: ${data[0]} for username: ${
+                      userstate.username
+                    } [ ${userstate.bits} bits ]`
+                  );
                 })
-                .catch((err) => {
+                .catch(err => {
                   Logger.error(`BITALERT could not be sent (ERROR ${err})`);
                 });
             }
           } else {
-            Logger.warn(`No custom BIT messages found for channel: ${channel}! Please check your configuration.`);
+            Logger.warn(
+              `No custom BIT messages found for channel: ${channel}! Please check your configuration.`
+            );
           }
         }
       } else if (Config.enableMeMode) {
-        this._client.action(channel, `FutureMan BITS Thank you ${userstate.username} for the ${userstate.bits} bits!`)
-          .then((data) => {
-            Logger.info(`BITALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+        this._client
+          .action(
+            channel,
+            `FutureMan BITS Thank you ${userstate.username} for the ${
+              userstate.bits
+            } bits!`
+          )
+          .then(data => {
+            Logger.info(
+              `BITALERT was sent to channel: ${data[0]} for username: ${
+                userstate.username
+              } [ ${userstate.bits} bits ]`
+            );
           })
-          .catch((err) => {
+          .catch(err => {
             Logger.error(`BITALERT could not be sent (ERROR ${err})`);
           });
       } else {
-        this._client.say(channel, `FutureMan BITS Thank you ${userstate.username} for the ${userstate.bits} bits!`)
-          .then((data) => {
-            Logger.info(`BITALERT was sent to channel: ${data[0]} for username: ${userstate.username} [ ${userstate.bits} bits ]`);
+        this._client
+          .say(
+            channel,
+            `FutureMan BITS Thank you ${userstate.username} for the ${
+              userstate.bits
+            } bits!`
+          )
+          .then(data => {
+            Logger.info(
+              `BITALERT was sent to channel: ${data[0]} for username: ${
+                userstate.username
+              } [ ${userstate.bits} bits ]`
+            );
           })
-          .catch((err) => {
+          .catch(err => {
             Logger.error(`BITALERT could not be sent (ERROR ${err})`);
           });
       }

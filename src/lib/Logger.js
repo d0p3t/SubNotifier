@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 REMCO TROOST <d0p3t89@gmail.com>
+ * Copyright (c) 2019 REMCO TROOST <d0p3t89@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -24,22 +24,24 @@ if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
 
-const tsFormat = () => (new Date()).toLocaleTimeString();
+const tsFormat = () => new Date().toLocaleTimeString();
 
-export const Logger = new (winston.Logger)({
+export const Logger = winston.createLogger({
   transports: [
-    new (winston.transports.Console)({
+    new winston.transports.Console({
       timestamp: tsFormat,
+      format: winston.format.simple(),
       colorize: true,
-      level: 'info',
+      level: process.env.NODE_ENV === 'development' ? 'verbose' : 'info',
       prettyPrint: true,
     }),
-    new (WinstonDaily)({
+    new WinstonDaily({
       filename: '%DATE%-subnotifier.log',
       dirname: `${logDir}`,
       timestamp: tsFormat,
-      datePattern: 'YYYY-MM',
+      datePattern: 'YYYY-MM-DD',
       maxSize: '20m',
+      maxFiles: '14d',
       json: true,
       prettyPrint: true,
       level: process.env.NODE_ENV === 'development' ? 'verbose' : 'info',
