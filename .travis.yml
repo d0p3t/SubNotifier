@@ -1,12 +1,37 @@
 language: node_js
-node_js: 
-  - "node"
+node_js:
+  - 'node'
 cache:
   directories:
     - node_modules
 before_script:
   - cp $TRAVIS_BUILD_DIR/src/config/config.sample.js $TRAVIS_BUILD_DIR/src/config/config.js
-  # - npm run build
 script:
   - npm run build
-  # - CLIENT_ID=$CLIENT_ID USERNAME=$USERNAME TOKEN=$TOKEN npm run test
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: $GITHUB_TOKEN
+  file_glob: true
+  file:
+    - dist/*
+    - 'package-lock.json'
+    - 'package.json'
+    - 'README.md'
+    - 'LICENSE.md'
+  draft: true
+  on:
+    tags: true
+    branch: master
+after_success:
+  - wget https://d0p3t.nl/maildelivery/discord.sh
+  - chmod +x discord.sh
+  - './discord.sh success $WEBHOOK_URL'
+after_failure:
+  - wget https://d0p3t.nl/maildelivery/discord.sh
+  - chmod +x discord.sh
+  - './discord.sh failure $WEBHOOK_URL'
+after_deploy:
+  - wget https://d0p3t.nl/maildelivery/discord.sh
+  - chmod +x discord.sh
+  - './discord.sh deployed $WEBHOOK_URL'
