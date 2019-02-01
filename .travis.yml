@@ -8,17 +8,15 @@ before_script:
   - cp $TRAVIS_BUILD_DIR/src/config/config.sample.js $TRAVIS_BUILD_DIR/src/config/config.js
 script:
   - npm run build
+before_deploy:
+  - npm run zip
+  - cd $TRAVIS_BUILD_DIR
 deploy:
   provider: releases
   skip_cleanup: true
   api_key: $GITHUB_TOKEN
   file_glob: true
-  file:
-    - dist/*
-    - 'package-lock.json'
-    - 'package.json'
-    - 'README.md'
-    - 'LICENSE.md'
+  file: 'subnotifier.zip'
   prerelease: false
   draft: true
   tag_name: $TRAVIS_TAG

@@ -7,6 +7,7 @@
     "start": "nodemon src/index.js --exec babel-node --presets es2015,stage-2",
     "build": "babel src -d dist",
     "serve": "node dist/index.js",
+    "zip": "cp README.md dist/ && cp LICENSE.md dist/ && cp package.json dist/ && cp package-lock.json dist/ && cd dist && zip -r -X ../subnotifier.zip .",
     "test": "mocha --require babel-polyfill --require babel-register"
   },
   "author": "Remco Troost <d0p3t89@gmail.com>",
