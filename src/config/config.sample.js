@@ -25,9 +25,9 @@
  * @type {Object}
  */
 const Config = {
-  clientId: '',
-  username: '',
-  token: '',
+  clientId: process.env.CLIENT_ID || '',
+  username: process.env.USERNAME || '',
+  token: process.env.TOKEN || '',
   channels: ['#d0p3t', '#channel2'],
   enableSecureMode: true,
   enableMeMode: true,
@@ -35,7 +35,7 @@ const Config = {
   enableGiftSubAlerts: true,
   enableResubAlerts: true,
   enableBitAlerts: false,
-  enableBitsThresholdMessage: true,
+  enableBitsThresholdMessages: true,
   enableCustomMessages: true,
   customMessages: {
     '#d0p3t': {

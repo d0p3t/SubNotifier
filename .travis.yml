@@ -1,0 +1,12 @@
+language: node_js
+node_js: 
+  - "node"
+cache:
+  directories:
+    - node_modules
+before_script:
+  - cp $TRAVIS_BUILD_DIR/src/config/config.sample.js $TRAVIS_BUILD_DIR/src/config/config.js
+  # - npm run build
+script:
+  - npm run build
+  # - CLIENT_ID=$CLIENT_ID USERNAME=$USERNAME TOKEN=$TOKEN npm run test
