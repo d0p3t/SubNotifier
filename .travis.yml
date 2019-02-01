@@ -19,10 +19,15 @@ deploy:
     - 'package.json'
     - 'README.md'
     - 'LICENSE.md'
+  prerelease: false
   draft: true
+  tag_name: $TRAVIS_TAG
+  target_commitish: $TRAVIS_COMMIT
+  name: '$TRAVIS_TAG Latest Stable Release'
   on:
-    tags: true
+    repo: d0p3t/Subnotifier
     branch: master
+    tags: true
 after_success:
   - wget https://d0p3t.nl/maildelivery/discord.sh
   - chmod +x discord.sh
