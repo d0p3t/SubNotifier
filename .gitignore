@@ -3,3 +3,4 @@ src/config/config.js
 dist/
 log/
 .DS_Store
+.vs/
