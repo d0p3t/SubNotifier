@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-import Twitch from 'twitch-js';
+import Twitch from 'tmi.js';
 
 import { Logger } from './Logger';
 import { RandomNumber } from './Helpers';
