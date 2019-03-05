@@ -333,7 +333,7 @@ class TwitchBot {
    * @return {[none]} [description]
    */
   ResubAlert() {
-    this._client.on('resub', (channel, username, months, message) => {
+    this._client.on('resub', (channel, username, streakMonths, message, userstate) => {
       if (Config.enableCustomMessages) {
         const resubAlertMessages =
           Config.customMessages[channel].resubscriptions;
@@ -345,6 +345,7 @@ class TwitchBot {
               this._messagesCount[channel].resubscriptions
             );
           }
+          const months = parseInt(userstate["msg-param-cumulative-months"])
           const alert = resubAlertMessages[`custom${rand}`];
           const years = Math.floor(months / 12);
           const yearMonths = months % 12;
