@@ -1,6 +1,6 @@
 <div align="center">
 
-# SubNotifier (v1.0.9.1)
+# SubNotifier (v1.0.9-1)
 
 <img src="http://i.imgur.com/gZkK7Yu.png" width="200px" height="200px">
 
@@ -159,7 +159,7 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 
 ## Changelog
 
-v1.0.9.1 (04 July 2019)
+v1.0.9-1 (04 July 2019)
 
 - Upgraded dependencies
 

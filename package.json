@@ -1,6 +1,6 @@
 {
   "name": "twitch-subnotifier",
-  "version": "1.0.9.1",
+  "version": "1.0.9-1",
   "description": "Sub and Resub Notifier for Twitch.TV Chat",
   "main": "lib/index.js",
   "scripts": {
