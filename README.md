@@ -1,12 +1,12 @@
 <div align="center">
 
-# SubNotifier (v1.0.8)
+# SubNotifier (v1.0.9.1)
 
 <img src="http://i.imgur.com/gZkK7Yu.png" width="200px" height="200px">
 
 ##### A Simple Sub and Resub Notifier for Twitch Chat
 
-![Version](https://img.shields.io/badge/version-1.0.8-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+![Version](https://img.shields.io/badge/version-1.0.9.1-green.svg) [![Discord](https://img.shields.io/discord/330910293934997504.svg)](https://discord.gg/bSd4cYJ) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 ### Want to use SubNotifier but need a Host? Follow + Tweet me [@d0p3t](https://twitter.com/d0p3t)
 
@@ -159,10 +159,17 @@ Also a great thank you to [Ikatzuki](https://twitter.com/lolIkatzuki) and [dinu]
 
 ## Changelog
 
+v1.0.9.1 (04 July 2019)
+
+- Upgraded dependencies
+
+v1.0.9 (05 March 2019)
+
+- Fixes issue #38
+
 v1.0.8 (04 March 2019)
 
 - Reverted back to tmi.js
-- Fixes issue #38
 
 v1.0.7 (01 February 2019)
 
